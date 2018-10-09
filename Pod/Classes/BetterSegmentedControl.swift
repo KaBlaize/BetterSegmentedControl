@@ -22,6 +22,17 @@ import UIKit
         override open var frame: CGRect {
             didSet {
                 titleMaskView.frame = frame
+                let mask = CAShapeLayer()
+                let path = UIBezierPath()
+                let bottomPadding: CGFloat = 1
+                let height: CGFloat = 3 + bottomPadding
+                path.move(to: CGPoint(x: 0, y: frame.height - height))
+                path.addLine(to: CGPoint(x: frame.width, y: frame.height - height))
+                path.addLine(to: CGPoint(x: frame.width, y: frame.height - bottomPadding))
+                path.addLine(to: CGPoint(x: 0, y: frame.height - bottomPadding))
+                path.close()
+                mask.path = path.cgPath
+                self.layer.mask = mask
             }
         }
         
