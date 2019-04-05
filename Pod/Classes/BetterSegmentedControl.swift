@@ -71,9 +71,9 @@ import UIKit
     
     // MARK: Properties
     /// The selected index
-    public fileprivate(set) var index: UInt
+    @objc public fileprivate(set) var index: UInt
     /// The titles / options available for selection
-    public var titles: [String] {
+    @objc public var titles: [String] {
         get {
             let titleLabels = titleLabelsView.subviews as! [UILabel]
             return titleLabels.map { $0.text! }
@@ -231,13 +231,13 @@ import UIKit
         }
     }
     /// The titles' font
-    public var titleFont: UIFont = UILabel().font {
+    @objc public var titleFont: UIFont = UILabel().font {
         didSet {
             titleLabels.forEach { $0.font = titleFont }
         }
     }
     /// The selected title's font
-    public var selectedTitleFont: UIFont = UILabel().font {
+    @objc public var selectedTitleFont: UIFont = UILabel().font {
         didSet {
             selectedTitleLabels.forEach { $0.font = selectedTitleFont }
         }
@@ -359,7 +359,7 @@ import UIKit
      
      - throws: An error of type IndexBeyondBounds(UInt) is thrown if an index beyond the available indices is passed.
      */
-    public func setIndex(_ index: UInt, animated: Bool = true) throws {
+    @objc public func setIndex(_ index: UInt, animated: Bool = true) throws {
         guard titleLabels.indices.contains(Int(index)) else {
             throw IndexError.indexBeyondBounds(index)
         }
@@ -391,7 +391,7 @@ import UIKit
                            delay: 0.0,
                            usingSpringWithDamping: bouncesOnChange ? Animation.springDamping : 1.0,
                            initialSpringVelocity: 0.0,
-                           options: [UIViewAnimationOptions.beginFromCurrentState, UIViewAnimationOptions.curveEaseOut],
+                           options: [UIView.AnimationOptions.beginFromCurrentState, UIView.AnimationOptions.curveEaseOut],
                            animations: {
                             () -> Void in
                             self.moveIndicatorView()
@@ -416,7 +416,7 @@ import UIKit
     }
     fileprivate func nearestIndex(toPoint point: CGPoint) -> UInt {
         let distances = titleLabels.map { abs(point.x - $0.center.x) }
-        return UInt(distances.index(of: distances.min()!)!)
+        return UInt(distances.firstIndex(of: distances.min()!)!)
     }
     fileprivate func moveIndicatorView() {
         indicatorView.frame = titleLabels[Int(self.index)].frame
